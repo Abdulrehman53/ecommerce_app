@@ -261,6 +261,7 @@ class _ProductsListScreenState extends State<ProductsListScreen>
 }
   """;
   String? userId;
+  String? guest;
   @override
   void initState() {
     super.initState();
@@ -271,13 +272,14 @@ class _ProductsListScreenState extends State<ProductsListScreen>
 
   getUser() async {
     userId = await PrefManager().read(AppKeys.Id);
+    guest = await PrefManager().read(AppKeys.guest);
     setState(() {});
   }
 
   getProducts() async {
     name = await PrefManager().read(AppKeys.UserName);
     setState(() {});
-   // String? token = await AppRepo().getToken();
+    // String? token = await AppRepo().getToken();
     //await PrefManager().save(AppKeys.token, token);
     categoriesModel = await AppRepo().getCategoriesApi();
     getBanners();
@@ -417,7 +419,7 @@ class _ProductsListScreenState extends State<ProductsListScreen>
                           onTap: () {
                             Navigator.pop(context);
                             getProuductsById(data.id);
-                             var index = categoriesModel!.data!.indexOf(data);
+                            var index = categoriesModel!.data!.indexOf(data);
                             _tabController.animateTo(index);
                           },
                           child: Container(
@@ -440,7 +442,7 @@ class _ProductsListScreenState extends State<ProductsListScreen>
                     .toList(),
               ),
             ),
-            
+
             /*  Divider(
               color: Colors.white,
             ),
@@ -557,7 +559,8 @@ class _ProductsListScreenState extends State<ProductsListScreen>
                     color: Colors.white,
                   )
                 : Container(),
-            (userId != null && userId!.isNotEmpty)
+            (userId != null && userId!.isNotEmpty ||
+                    (guest != null && guest!.isNotEmpty))
                 ? ListTile(
                     title: Text(
                       'Logout'.toUpperCase(),
@@ -570,6 +573,7 @@ class _ProductsListScreenState extends State<ProductsListScreen>
                       PrefManager().save(AppKeys.Email, '');
                       PrefManager().save(AppKeys.Id, '');
                       PrefManager().save(AppKeys.UserName, '');
+                      PrefManager().save(AppKeys.guest, '');
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
                               builder: (context) => LoginScreen()),
@@ -675,11 +679,13 @@ class _ProductsListScreenState extends State<ProductsListScreen>
                         SizedBox(
                           height: 8,
                         ),
-                        bannersModel == null ? Container() : carosolWidget(),
                         Expanded(
                           child: CustomScrollView(
                             controller: _scrollController,
                             slivers: [
+                             /*  bannersModel == null
+                                  ? Container()
+                                  : */ SliverToBoxAdapter(child: carosolWidget()),
                               /*   ResponsiveSliverCenter(
                       padding: EdgeInsets.all(Sizes.p16),
                       child: ProductsSearchTextField(),

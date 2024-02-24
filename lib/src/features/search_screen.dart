@@ -32,7 +32,6 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
      
       appBar: AppBar(
-        brightness: Brightness.light,
         elevation: 0.0,
         backgroundColor: Colors.white,
         leading: IconButton(

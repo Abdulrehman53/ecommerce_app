@@ -20,16 +20,17 @@ class _SplashScreenState extends State<SplashScreen> {
 
     Future.delayed(Duration(seconds: 2), () async {
       // Navigator.popAndPushNamed(context, LoginScreen.id);
-     /*  String? userId = await PrefManager().read(AppKeys.Id);
-      if (userId.isNotEmpty) { */
+      String? userId = await PrefManager().read(AppKeys.Id);
+      String? guest = await PrefManager().read(AppKeys.guest);
+      if (userId.isNotEmpty || guest.isNotEmpty) {
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => ProductsListScreen()),
             (Route<dynamic> route) => false);
-      /* } else {
+      } else {
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => LoginScreen()),
             (Route<dynamic> route) => false);
-      } */
+      }
     });
   }
 
@@ -55,7 +56,9 @@ class _SplashScreenState extends State<SplashScreen> {
         decoration: BoxDecoration(
           color: Colors.white,
         ),
-        child: Center(child:ComponentText.buildTextWidget(title: 'Keune',fontSize: 30,fontWeight: FontWeight.bold)),
+        child: Center(
+            child: ComponentText.buildTextWidget(
+                title: 'Keune', fontSize: 30, fontWeight: FontWeight.bold)),
       ),
     );
   }

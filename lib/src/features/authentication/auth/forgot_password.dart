@@ -1,9 +1,7 @@
 import 'package:ecommerce_app/src/constants/AppKeys.dart';
-import 'package:ecommerce_app/src/features/authentication/auth/forgot_password.dart';
 import 'package:ecommerce_app/src/features/authentication/auth/registration_screen.dart';
 import 'package:ecommerce_app/src/features/products/presentation/products_list/products_list_screen.dart';
 import 'package:ecommerce_app/src/helpers/PrefManager.dart';
-import 'package:ecommerce_app/src/helpers/utils.dart';
 import 'package:ecommerce_app/src/repositories/app_repo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,14 +26,14 @@ import '../../../common_widgets/component_sized_box.dart';
 import '../../../common_widgets/component_text_widgets.dart';
 import '../../../constants/constants_colors.dart';
 
-class LoginScreen extends StatelessWidget {
+class ForgotPasswordScreen extends StatelessWidget {
   static const id = 'LoginScreen';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: ComponentText.buildTextWidget(
-              title: 'login'.toUpperCase(),
+              title: 'Forgot Password'.toUpperCase(),
               color: Colors.white,
               fontSize: 18,
               fontWeight: FontWeight.bold),
@@ -109,61 +107,17 @@ class __SignInFormState extends State<_SignInForm> {
                         ),
                       ),
                       ComponentSizedBox.topMargin(size: 30),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 0,
-                        ),
-                        child: FormFieldComponent(
-                          controller: _passwordController,
-                          hint: 'Password'.toUpperCase(),
-                          isObscure: passwordVisible ? false : true,
-                          keyboardType: TextInputType.text,
-                          iconField: Icons.lock,
-                          suffixIcon: passwordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          onPasswordPressed: () {
-                            setState(() {
-                              passwordVisible = !passwordVisible;
-                            });
-                          },
-                          validator: (value) {
-                            return Validation.validateValue(
-                                value!, 'Password'.toUpperCase(), false);
-                          },
-                        ),
-                      ),
+                      
                       const SizedBox(
                         height: 24,
                       ),
-                      InkWell(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context){
-                            return ForgotPasswordScreen();
-                          }));
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 0),
-                          child: Row(
-                            children: [
-                              ComponentText.buildTextWidget(
-                                  title: 'Forgot Password?'.toUpperCase(),
-                                  color: ConstantColor.titleTextColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.normal),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 50,
-                      ),
+                     
                       ComponentButton.buildButton(
                           onPressed: () {
                             _onLoginButtonPressed();
                             //AppRouter.goToNextScreen(context, DashBoard());
                           },
-                          title: 'Login'.toUpperCase(),
+                          title: 'Submit'.toUpperCase(),
                           texColor: ConstantColor.white,
                           btnColor: ConstantColor.primaryColor,
                           width: MediaQuery.of(context).size.width,
@@ -171,50 +125,7 @@ class __SignInFormState extends State<_SignInForm> {
                       const SizedBox(
                         height: 30,
                       ),
-                      ComponentText.buildTextWidget(
-                          title: 'Don\'t have an account yet?'.toUpperCase(),
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      ComponentText.buildTextWidget(
-                          title:
-                              'Easily create an account for event better user experience'
-                                  .toUpperCase(),
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                          maxLines: 2,
-                          textAlign: TextAlign.center),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      ComponentButton.buildButton(
-                          onPressed: () {
-                            AppRouter.goToNextScreen(
-                                context, RegistrationScreen());
-                          },
-                          title: 'create your account'.toUpperCase(),
-                          texColor: ConstantColor.white,
-                          btnColor: ConstantColor.primaryColor,
-                          width: MediaQuery.of(context).size.width,
-                          height: 48),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      ComponentButton.buildButton(
-                          onPressed: () async {
-                            await PrefManager().save(AppKeys.guest, 'guest');
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => ProductsListScreen()),
-                                (Route<dynamic> route) => false);
-                          },
-                          title: 'Continue as guest'.toUpperCase(),
-                          texColor: ConstantColor.white,
-                          btnColor: ConstantColor.primaryColor,
-                          width: MediaQuery.of(context).size.width,
-                          height: 48),
+                     
                     ],
                   ),
                 ],
@@ -228,9 +139,8 @@ class __SignInFormState extends State<_SignInForm> {
 
   _onLoginButtonPressed() async {
     if (_key.currentState!.validate()) {
-      AppRepo().login(
+      AppRepo().forgotPassword(
           email: _usernameController.text,
-          password: _passwordController.text,
           context: context);
 
       // Get.to(StaffProfileScreen());

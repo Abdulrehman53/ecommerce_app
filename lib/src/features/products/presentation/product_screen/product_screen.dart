@@ -49,7 +49,6 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   getProuductById() async {
-  
     productModel = await AppRepo().getProduct(widget.productId);
     setState(() {});
   }
@@ -89,57 +88,57 @@ class _ProductScreenState extends State<ProductScreen> {
       ),
       body: Consumer(
         builder: (context, ref, _) {
-         
           return productModel == null
-                ? Container()
-                : CustomScrollView(
-                    slivers: [
-                      ResponsiveSliverCenter(
-                        padding: const EdgeInsets.all(Sizes.p16),
-                        child: ProductDetails(
-                          product: productModel,
-                          callback: () {
-                            setState(() {
-                              print('object');
-                            });
-                          },
-                        ),
+              ? Container()
+              : CustomScrollView(
+                  slivers: [
+                    ResponsiveSliverCenter(
+                      padding: const EdgeInsets.all(Sizes.p16),
+                      child: ProductDetails(
+                        product: productModel,
+                        callback: () {
+                          AppRouter.goToNextScreen(
+                              context, ShoppingCartScreen());
+                          setState(() {
+                            print('object');
+                          });
+                        },
                       ),
-                      ResponsiveSliverCenter(
-                          child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 24, vertical: 8),
-                        child: ComponentText.buildTextWidget(
-                            title: 'INGREDIENTS',
-                            maxLines: 1,
-                            fontSize: 18,
-                            color: ConstantColor.primaryColor),
-                      )),
-                      ResponsiveSliverCenter(
-                          child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 24, vertical: 8),
-                        child: Column(
-                          children: [
-                            ComponentText.buildTextWidget(
-                                title: productModel!.data!.ingredients ?? '',
-                                maxLines: 6,
-                                fontSize: 14),
-                            gapH16,
-                            ComponentText.buildTextWidget(
-                                title:
-                                    'Usage: ${productModel!.data!.useageDirections}',
-                                maxLines: 6,
-                                color: Colors.grey,
-                                fontSize: 12),
-                            gapH48,
-                          ],
-                        ),
-                      )),
-                      //ProductReviewsList(productId: productId),
-                    ],
-                  );
-          
+                    ),
+                    ResponsiveSliverCenter(
+                        child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 8),
+                      child: ComponentText.buildTextWidget(
+                          title: 'INGREDIENTS',
+                          maxLines: 1,
+                          fontSize: 18,
+                          color: ConstantColor.primaryColor),
+                    )),
+                    ResponsiveSliverCenter(
+                        child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 8),
+                      child: Column(
+                        children: [
+                          ComponentText.buildTextWidget(
+                              title: productModel!.data!.ingredients ?? '',
+                              maxLines: 6,
+                              fontSize: 14),
+                          gapH16,
+                          ComponentText.buildTextWidget(
+                              title:
+                                  'Usage: ${productModel!.data!.useageDirections}',
+                              maxLines: 6,
+                              color: Colors.grey,
+                              fontSize: 12),
+                          gapH48,
+                        ],
+                      ),
+                    )),
+                    //ProductReviewsList(productId: productId),
+                  ],
+                );
         },
       ),
     );

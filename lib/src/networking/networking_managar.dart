@@ -51,6 +51,7 @@ class NetworkManager {
     FormData? formData,
     bool isLoading = true,
     bool isGetCookie = false,
+    bool isToken=true
   }) async {
     this.setDioOptions();
 
@@ -102,11 +103,15 @@ class NetworkManager {
       return dioClient;
     }; */
     String? token = await PrefManager().read(AppKeys.token);
+    if(isToken){
     dio.options.headers = {
       'token': 'eyJpdiI6Iklja2NJNEJEeTRYcGtPTjdDcmxSTkE9PSIsInZhbHVlIjoieHhFdGpiaVoyaUV1M2lBNnRPbWNyczNvZnhlbjExd2NPUUtkKzlZcWRJcz0iLCJtYWMiOiI4NTFkNDViMjZjYzVlZjkzMjI5YTg4M2RkZjRjZmZhNmIyYmQ1MDRiNmM4MTE1NzZmMDE1NGVmYzUwMmI3Y2Q0IiwidGFnIjoiIn0=',
 
       //'Cookie': 'XDEBUG_SESSION=PHPSTORM'
     };
+    }else{
+        dio.options.headers = {};
+    }
     Response? response;
     try {
       if (isLoading) {

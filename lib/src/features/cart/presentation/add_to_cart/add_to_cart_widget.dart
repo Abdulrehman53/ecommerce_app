@@ -72,6 +72,7 @@ class AddToCartWidget extends ConsumerWidget {
                 ref
                     .read(addToCartControllerProvider.notifier)
                     .addItem(product!.data!.id.toString());
+                    
               }else{
                 Navigator.push(context, MaterialPageRoute(builder: (context){
                   return LoginScreen();

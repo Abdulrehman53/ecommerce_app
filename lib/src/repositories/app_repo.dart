@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:ecommerce_app/config/router.dart';
 import 'package:ecommerce_app/src/constants/AppKeys.dart';
 import 'package:ecommerce_app/src/helpers/PrefManager.dart';
@@ -29,21 +30,25 @@ class AppRepo {
       required BuildContext context}) async {
     //dio.FormData? formData;
 
-    Map<String, dynamic> formData = {
+    final formData = FormData.fromMap({
       'email': registerModel?.email,
       'password': registerModel?.password,
       'confirm_password': registerModel?.password,
       'name': registerModel?.name,
-    };
+    });
 
     dio.Response? response = await NetworkManager().callApi(
         method: HttpMethod.Post,
         urlEndPoint: AppKeys.Registration,
-        body: json.encode(formData),
-        isFormDataRequest: false);
+        formData: formData,
+        isFormDataRequest: true);
 
     Fluttertoast.showToast(msg: 'User Created Successfully');
-    Navigator.pop(context);
+    login(
+        email: registerModel!.email!,
+        password: registerModel.password!,
+        context: context);
+    // Navigator.pop(context);
     //InvoiceModel invoiceModel = InvoiceModel.fromMap(response!.data);
 
     // if (response.statusCode == ConstantsNums.API_CODE_SUCCESS) {
@@ -77,6 +82,7 @@ class AppRepo {
     // if (response.statusCode == ConstantsNums.API_CODE_SUCCESS) {
     return CategoriesModel.fromMap(response!.data);
   }
+
   Future<BannersModel> getBannersApi() async {
     //dio.FormData? formData;
 
@@ -172,7 +178,10 @@ class AppRepo {
       'password': 'test@123',
     });
     dio.Response? response = await NetworkManager().callApi(
-        method: HttpMethod.Post, urlEndPoint: 'token', isFormDataRequest: true,formData: formData);
+        method: HttpMethod.Post,
+        urlEndPoint: 'token',
+        isFormDataRequest: true,
+        formData: formData);
 
     //InvoiceModel invoiceModel = InvoiceModel.fromMap(response!.data);
 
@@ -232,6 +241,33 @@ class AppRepo {
     prefManager.save(AppKeys.UserName, userModel.data!.fullName);
     // ignore: use_build_context_synchronously
     AppRouter.goToNextScreen(context, ProductsListScreen());
+    //  Navigator.pop(context);
+    //InvoiceModel invoiceModel = InvoiceModel.fromMap(response!.data);
+
+    // if (response.statusCode == ConstantsNums.API_CODE_SUCCESS) {
+    return null;
+  }
+
+  Future forgotPassword(
+      {required String email, required BuildContext context}) async {
+    //dio.FormData? formData;
+
+    Map<String, dynamic> formData = {
+      'email': email,
+    };
+
+    dio.Response? response = await NetworkManager().callApi(
+        method: HttpMethod.Post,
+        urlEndPoint: AppKeys.ForgotPassword,
+        body: json.encode(formData),
+        isFormDataRequest: false);
+    // ignore: use_build_context_synchronously
+    if (response?.data['status_code'] == 200) {
+      Fluttertoast.showToast(msg: response?.data['data']);
+    } else {
+      Fluttertoast.showToast(msg: response?.data['message']);
+    }
+    Navigator.pop(context);
     //  Navigator.pop(context);
     //InvoiceModel invoiceModel = InvoiceModel.fromMap(response!.data);
 

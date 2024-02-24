@@ -5,6 +5,7 @@ import 'package:ecommerce_app/src/common_widgets/component_sized_box.dart';
 import 'package:ecommerce_app/src/common_widgets/component_text_widgets.dart';
 import 'package:ecommerce_app/src/constants/AppKeys.dart';
 import 'package:ecommerce_app/src/constants/constants_colors.dart';
+import 'package:ecommerce_app/src/features/products/presentation/products_list/products_list_screen.dart';
 import 'package:ecommerce_app/src/features/thankyou_screen.dart';
 import 'package:ecommerce_app/src/models/city_model.dart';
 import 'package:ecommerce_app/src/models/order_response_model.dart';
@@ -62,6 +63,21 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
         child: Form(
           key: _key,
           child: ListView(children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => ProductsListScreen()),
+                      (Route<dynamic> route) => false);
+                },
+                child: ComponentText.buildTextWidget(
+                    title: 'Add More Items',
+                    textDecoration: TextDecoration.underline),
+              ),
+            ),
+            ComponentSizedBox.topMargin(size: 8),
             ComponentText.buildTextWidget(
                 title: 'Contact Information',
                 fontWeight: FontWeight.bold,

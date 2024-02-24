@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../../config/validations.dart';
 import '../../../common_widgets/component_button.dart';
@@ -187,9 +188,15 @@ class __SignInFormState extends State<_SignInForm> {
   _onLoginButtonPressed() {
     if (_key.currentState!.validate()) {
       _key.currentState!.save();
-      registerModel = RegisterModel(
-          name: firstName! + ' ' + lastName!, email: email, password: password);
-      AppRepo().signup(registerModel: registerModel,context: context);
+      if (password != confirmPassword) {
+        Fluttertoast.showToast(msg: 'Password and confirm password should be same');
+      } else {
+        registerModel = RegisterModel(
+            name: firstName! + ' ' + lastName!,
+            email: email,
+            password: password);
+        AppRepo().signup(registerModel: registerModel, context: context);
+      }
       // Get.to(StaffProfileScreen());
       // _controller.login(_emailController.text, _passwordController.text);
     } else {
